@@ -1,0 +1,100 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model User {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  avatar    String?
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  userSettings   UserSettings?
+  categories     Category[]
+  transactions   Transaction[]
+  monthHistories MonthHistory[]
+  yearHistories  YearHistory[]
+
+  @@map(name: "users")
+}
+
+model UserSettings {
+  userId   String @id @map("user_id")
+  currency String
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map(name: "user_settings")
+}
+
+model Category {
+  id        String   @id @default(cuid())
+  name      String
+  type      String   @default("income")
+  icon      String
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  updatedAt DateTime @updatedAt @map(name: "updated_at")
+
+  userId       String        @map("user_id")
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  transactions Transaction[]
+
+  @@unique([name])
+  @@map(name: "categories")
+}
+
+model Transaction {
+  id          String   @id @default(cuid())
+  amount      Float
+  description String?
+  date        DateTime
+  type        String   @default("income")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  userId String @map("user_id")
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  categoryId String   @map("category_id")
+  category   Category @relation(fields: [categoryId], references: [id])
+
+  @@map(name: "transactions")
+}
+
+model MonthHistory {
+  id      String @id @default(cuid())
+  day     Int
+  month   Int
+  year    Int
+  income  Float
+  expense Float
+
+  userId String @map("user_id")
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map(name: "month_histories")
+}
+
+model YearHistory {
+  id      String @id @default(cuid())
+  month   Int
+  year    Int
+  income  Float
+  expense Float
+
+  userId String @map("user_id")
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map(name: "year_histories")
+}
