@@ -1,29 +1,45 @@
-import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
+import UserSettingsEditForm from "@/app/wizard/_components/user-settings-edit-form";
+import Logo from "@/components/logo";
+import { Separator } from "@/components/ui/separator";
+import prisma from "@/lib/prisma";
+import { getCurrentUser } from "@/lib/session";
 import { redirect } from "next/navigation";
 
 export default async function Wizard() {
-  const { getUser } = getKindeServerSession();
-  const user = await getUser();
+  const { user } = await getCurrentUser();
 
   if (!user) {
-    redirect("/api/auth/login");
+    throw new Error("Unauthorized");
+  }
+
+  const userSettings = await prisma.userSettings.findUnique({
+    where: { userId: user?.id },
+  });
+
+  if (userSettings) {
+    redirect("/dashboard");
   }
 
   return (
-    <div className="container max-w-2xl flex flex-col justify-between gap-4">
-      <h1 className="text-center text-3xl space-x-2">
-        Welcome,{" "}
-        <span className="font-bold">
-          {user.given_name} {user.family_name} 👋🥳
-        </span>
-      </h1>
-      <p className="mt-4 text-center text-muted-foreground leading-8">
-        Let&apos;s get started by setting up your currency.
-        <br />
-        <span className="text-sm">
-          You can change these settings at any time
-        </span>{" "}
-      </p>
+    <div className="container max-w-2xl flex flex-col items-center justify-between gap-4">
+      <div className="space-y-4">
+        <h1 className="text-center text-3xl space-x-2">
+          Welcome,{" "}
+          <span className="font-bold">
+            {user.given_name} {user.family_name} 👋🥳
+          </span>
+        </h1>
+        <p className="mt-4 text-center text-muted-foreground leading-8">
+          Let&apos;s get started by setting up your currency.
+          <br />
+          <span className="text-sm">
+            You can change these settings at any time
+          </span>{" "}
+        </p>
+      </div>
+      <Separator />
+      <UserSettingsEditForm />
+      <Logo wrapperClassName="mt-8" />
     </div>
   );
 }

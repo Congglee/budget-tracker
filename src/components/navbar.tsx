@@ -1,7 +1,13 @@
 "use client";
 
 import { Button, buttonVariants } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import { navLinks } from "@/config/links";
 import { cn } from "@/lib/utils";
 import { Menu } from "lucide-react";
@@ -18,12 +24,16 @@ function NavbarDrawer({ pathname }: { pathname: string }) {
         </Button>
       </SheetTrigger>
       <SheetContent side="left">
-        <Link
-          href="/"
-          className="bg-gradient-to-r from-[#e6adc5] to-[#8d00f7] bg-clip-text text-2xl font-bold leading-tight tracking-tighter text-transparent"
-        >
-          Budget Tracker
-        </Link>
+        <SheetHeader>
+          <SheetTitle asChild>
+            <Link
+              href="/"
+              className="bg-gradient-to-r from-[#e6adc5] to-[#8d00f7] bg-clip-text text-2xl font-bold leading-tight tracking-tighter text-transparent"
+            >
+              Budget Tracker
+            </Link>
+          </SheetTitle>
+        </SheetHeader>
         <nav className="grid mt-6 gap-6 text-lg font-medium">
           {navLinks.data.map((item) => {
             const isActive = pathname === item.href;
