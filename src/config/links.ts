@@ -2,8 +2,9 @@ import { Navigation } from "@/types";
 
 export const navLinks: Navigation = {
   data: [
-    { title: "Dashboard", href: "/" },
-    { title: "Transactions", href: "/transactions" },
-    { title: "Manage", href: "/manage" },
+    { title: "Home", href: "/" },
+    { title: "Features", href: "/#features" },
+    { title: "Overview", href: "/#overview" },
+    { title: "Dashboard", href: "/dashboard" },
   ],
 };

@@ -1,11 +1,6 @@
-import Header from "@/components/header";
+import DashboardPanelLayout from "@/components/dashboard-panel/dashoard-panel-layout";
 import { ReactNode } from "react";
 
 export default function DashboardLayout({ children }: { children: ReactNode }) {
-  return (
-    <div className="w-full bg-background">
-      <Header />
-      {children}
-    </div>
-  );
+  return <DashboardPanelLayout>{children}</DashboardPanelLayout>;
 }

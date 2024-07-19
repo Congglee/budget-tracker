@@ -6,14 +6,14 @@ import { getCurrentUser } from "@/lib/session";
 import { redirect } from "next/navigation";
 
 export default async function Wizard() {
-  const { user } = await getCurrentUser();
+  const { user, isLoggedIn } = await getCurrentUser();
 
-  if (!user) {
-    throw new Error("Unauthorized");
+  if (!isLoggedIn || !user) {
+    redirect("/api/auth/login");
   }
 
   const userSettings = await prisma.userSettings.findUnique({
-    where: { userId: user?.id },
+    where: { userId: user.id },
   });
 
   if (userSettings) {

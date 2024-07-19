@@ -62,22 +62,18 @@ export default function Navbar() {
   return (
     <>
       <nav className="hidden flex-col font-medium md:flex md:flex-row md:items-center">
-        {navLinks.data.map((item) => {
-          const isActive = pathname === item.href;
-          return (
-            <Link
-              key={item.title}
-              href={item.href}
-              className={cn(
-                buttonVariants({ variant: "ghost" }),
-                "text-lg text-muted-foreground hover:text-foreground",
-                isActive && "text-foreground"
-              )}
-            >
-              {item.title}
-            </Link>
-          );
-        })}
+        {navLinks.data.map((item) => (
+          <Link
+            key={item.title}
+            href={item.href}
+            className={cn(
+              buttonVariants({ variant: "ghost" }),
+              "text-lg text-muted-foreground hover:text-foreground"
+            )}
+          >
+            {item.title}
+          </Link>
+        ))}
       </nav>
       <NavbarDrawer pathname={pathname} />
     </>

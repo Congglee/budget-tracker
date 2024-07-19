@@ -73,7 +73,6 @@ export async function POST(req: Request) {
             id: user.id,
             name: `${user.first_name} ${user.last_name}`,
             email: user.email,
-            avatar: `https://avatar.vercel.sh/${user.first_name}`,
           },
         });
         break;
