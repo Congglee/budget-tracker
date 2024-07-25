@@ -67,3 +67,23 @@
     @apply bg-background text-foreground;
   }
 }
+
+.scroll {
+  @apply w-full h-full cursor-pointer;
+}
+
+.scroll::-webkit-scrollbar {
+  @apply w-1 h-2;
+}
+
+.scroll::-webkit-scrollbar-track {
+  @apply bg-background rounded-lg;
+}
+
+.scroll::-webkit-scrollbar-thumb {
+  @apply rounded-lg bg-border;
+}
+
+.rdp-vhidden {
+  @apply hidden;
+}

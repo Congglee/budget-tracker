@@ -1,12 +1,6 @@
 import { IconKeys } from "@/components/icons";
 import { LucideIcon } from "lucide-react";
 
-export type Currency = {
-  value: string;
-  label: string;
-  locale: string;
-};
-
 export type NavItem = {
   title: string;
   href: string;
@@ -49,3 +43,5 @@ export type MenuGroup = {
   label: string;
   menus: Menu[];
 };
+
+export type TransactionType = "income" | "expense";

@@ -14,7 +14,9 @@ import { Form, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { Separator } from "@/components/ui/separator";
 import { handleErrorResponse, parseApiResponse } from "@/lib/helper";
 import { userSettingsCreateSchema } from "@/lib/validations/user";
+import { DefaultResponse } from "@/types/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { UserSettings } from "@prisma/client";
 import { LoaderCircle } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
@@ -32,6 +34,7 @@ export default function UserSettingsEditForm() {
     handleSubmit,
     formState: { isSubmitting },
     setError,
+    setValue,
   } = form;
   const router = useRouter();
 
@@ -42,7 +45,7 @@ export default function UserSettingsEditForm() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
-      await parseApiResponse<string>(response);
+      await parseApiResponse<DefaultResponse<UserSettings>>(response);
       toast.success("Settings saved successfully");
       router.push("/dashboard");
       router.refresh();
@@ -69,7 +72,7 @@ export default function UserSettingsEditForm() {
                 <FormItem>
                   <CurrencyComboBox
                     value={field.value}
-                    onSelect={(value) => form.setValue("currency", value)}
+                    onSelect={(value) => setValue("currency", value)}
                   />
                   <FormMessage />
                 </FormItem>
