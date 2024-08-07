@@ -30,7 +30,7 @@ interface ComboboxProps {
   searchPlaceholder?: string;
 }
 
-export default function Combobox({
+export default function ComboboxInput({
   value,
   options,
   onSelect,

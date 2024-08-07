@@ -1,3 +1,6 @@
+import { TransactionType } from "@/types";
+import { format, setMonth } from "date-fns";
+
 export type Option<T = string> = {
   value: T;
   label: string;
@@ -12,9 +15,28 @@ export const currencies = [
 ];
 
 export const transactionTypesOptions: Array<{
-  value: "income" | "expense";
+  value: TransactionType;
   label: string;
 }> = [
   { value: "income", label: "Income 🤑" },
   { value: "expense", label: "Expense 😤" },
 ];
+
+export const monthOptions = Array.from({ length: 12 }, (_, i) => {
+  const date = setMonth(new Date(), i);
+  return {
+    value: (i + 1).toString(),
+    label: format(date, "MMMM"),
+  };
+});
+
+export function generateYearOptions(startYear: number, endYear: number) {
+  const yearOptions = [];
+  for (let year = startYear; year <= endYear; year++) {
+    yearOptions.push({
+      value: year.toString(),
+      label: year.toString(),
+    });
+  }
+  return yearOptions;
+}

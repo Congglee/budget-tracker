@@ -44,7 +44,7 @@ export default function Menu({ isOpen }: { isOpen: boolean }) {
                   </Tooltip>
                 </TooltipProvider>
               ) : (
-                <p className="pb-2"></p>
+                <p className="pb-2" />
               )}
               {menus.map(
                 ({ href, label, icon: Icon, active, submenus }, index) =>

@@ -26,20 +26,20 @@ import { useRouter } from "next/navigation";
 import { useTheme } from "next-themes";
 import { useEffect } from "react";
 import { handleErrorResponse, parseApiResponse } from "@/lib/helper";
-import { DefaultResponse } from "@/types/utils";
+import { CustomResponse } from "@/types/utils";
 import { Category } from "@prisma/client";
 import { toast } from "sonner";
-import Combobox from "@/components/combobox";
 import { transactionTypesOptions } from "@/config/options";
 import { cn } from "@/lib/utils";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { CircleOff, LoaderCircle, Plus } from "lucide-react";
 import EmojiPicker, { Theme } from "emoji-picker-react";
+import ComboboxInput from "@/components/form/combobox-input";
 
 interface AddCategoryFormProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  type: TransactionType;
+  type?: TransactionType;
 }
 
 type FormData = z.infer<typeof categoryCreateSchema>;
@@ -54,7 +54,7 @@ export default function AddCategoryForm({
     defaultValues: {
       name: "",
       icon: "",
-      type,
+      type: "income",
     },
   });
   const {
@@ -66,6 +66,12 @@ export default function AddCategoryForm({
   } = form;
   const router = useRouter();
   const theme = useTheme();
+
+  useEffect(() => {
+    if (type) {
+      setValue("type", type);
+    }
+  }, [setValue, type]);
 
   useEffect(() => {
     if (!open) {
@@ -80,9 +86,9 @@ export default function AddCategoryForm({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
-      await parseApiResponse<DefaultResponse<Category>>(response);
+      const result = await parseApiResponse<CustomResponse<Category>>(response);
       if (response.ok) {
-        toast.success("Category created successfully");
+        toast.success(result.message);
         onOpenChange(!open);
         router.refresh();
       }
@@ -128,7 +134,7 @@ export default function AddCategoryForm({
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel htmlFor="type">Type</FormLabel>
-                    <Combobox
+                    <ComboboxInput
                       value={field.value}
                       options={transactionTypesOptions}
                       onSelect={(value) =>

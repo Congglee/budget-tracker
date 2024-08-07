@@ -1,5 +1,5 @@
-import Footer from "@/components/footer";
-import Header from "@/components/header";
+import Footer from "@/components/layout/footer";
+import Header from "@/components/layout/header";
 import { ReactNode } from "react";
 
 export default function FrontPageLayout({ children }: { children: ReactNode }) {

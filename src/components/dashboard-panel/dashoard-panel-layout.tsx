@@ -1,10 +1,10 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { useStore } from "@/hooks/use-store";
 import { useSidebarToggle } from "@/hooks/use-sidebar-toggle";
 import Sidebar from "@/components/dashboard-panel/sidebar";
 import DashboardFooter from "@/components/dashboard-panel/dashboard-footer";
+import { useStore } from "@/hooks/use-store";
 
 export default function DashboardPanelLayout({
   children,

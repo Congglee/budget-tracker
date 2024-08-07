@@ -1,7 +1,7 @@
 import AuthToggle from "@/components/auth-toggle";
 import UserNav from "@/components/dashboard-panel/user-nav";
+import Navbar from "@/components/layout/navbar";
 import Logo from "@/components/logo";
-import Navbar from "@/components/navbar";
 import { getCurrentUser } from "@/lib/session";
 import Link from "next/link";
 

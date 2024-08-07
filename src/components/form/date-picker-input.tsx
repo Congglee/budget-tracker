@@ -1,5 +1,4 @@
 import { format } from "date-fns";
-import { vi } from "date-fns/locale";
 import { CalendarIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -17,7 +16,7 @@ interface DatePickerProps {
   onChange?: (...event: any[]) => void;
 }
 
-export default function DatePicker({
+export default function DatePickerInput({
   className,
   value,
   onChange,
@@ -34,11 +33,7 @@ export default function DatePicker({
                 !value && "text-muted-foreground"
               )}
             >
-              {value ? (
-                format(value, "dd MMMM yyyy", { locale: vi })
-              ) : (
-                <span>Chọn ngày</span>
-              )}
+              {value ? format(value, "dd MMMM yyyy") : <span>Pick a date</span>}
               <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
             </Button>
           </FormControl>

@@ -21,11 +21,10 @@ model User {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  userSettings   UserSettings?
-  categories     Category[]
-  transactions   Transaction[]
-  monthHistories MonthHistory[]
-  yearHistories  YearHistory[]
+  userSettings UserSettings?
+  categories   Category[]
+  transactions Transaction[]
+  histories    History[]
 
   @@map(name: "users")
 }
@@ -50,7 +49,7 @@ model Category {
   user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
   transactions Transaction[]
 
-  @@unique([name])
+  @@unique([name, type, userId])
   @@map(name: "categories")
 }
 
@@ -73,29 +72,16 @@ model Transaction {
   @@map(name: "transactions")
 }
 
-model MonthHistory {
+model History {
   id      String @id @default(cuid())
-  day     Int
-  month   Int
+  day     Int?
+  month   Int?
   year    Int
   income  Float
   expense Float
+  userId  String @map("user_id")
+  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  userId String @map("user_id")
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@map(name: "month_histories")
-}
-
-model YearHistory {
-  id      String @id @default(cuid())
-  month   Int
-  year    Int
-  income  Float
-  expense Float
-
-  userId String @map("user_id")
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@map(name: "year_histories")
+  @@unique([day, month, year, userId])
+  @@map(name: "histories")
 }

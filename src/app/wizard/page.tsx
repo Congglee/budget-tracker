@@ -1,7 +1,7 @@
-import UserSettingsEditForm from "@/app/wizard/_components/user-settings-edit-form";
+import UserSettingsForm from "@/app/wizard/_components/user-settings-form";
 import Logo from "@/components/logo";
 import { Separator } from "@/components/ui/separator";
-import prisma from "@/lib/prisma";
+import { getUserSettings } from "@/lib/api/settings";
 import { getCurrentUser } from "@/lib/session";
 import { redirect } from "next/navigation";
 
@@ -12,9 +12,7 @@ export default async function Wizard() {
     redirect("/api/auth/login");
   }
 
-  const userSettings = await prisma.userSettings.findUnique({
-    where: { userId: user.id },
-  });
+  const userSettings = await getUserSettings(user.id);
 
   if (userSettings) {
     redirect("/dashboard");
@@ -38,7 +36,7 @@ export default async function Wizard() {
         </p>
       </div>
       <Separator />
-      <UserSettingsEditForm />
+      <UserSettingsForm />
       <Logo wrapperClassName="mt-8" />
     </div>
   );
