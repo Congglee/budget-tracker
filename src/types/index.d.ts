@@ -13,6 +13,11 @@ export type SiteConfig = {
   ogImage: string;
 };
 
+export type NavItem = {
+  title: string;
+  href: string;
+};
+
 export type Navigation = {
   data: NavItem[];
 };
