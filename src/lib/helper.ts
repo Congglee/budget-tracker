@@ -1,4 +1,4 @@
-import { CustomResponse } from "@/types/utils";
+import { ResponseData } from "@/types/utils";
 import { UseFormSetError } from "react-hook-form";
 import { toast } from "sonner";
 
@@ -87,7 +87,7 @@ export const handleErrorResponse = ({
 
 export async function parseApiResponse<Data>(
   response: Response
-): Promise<CustomResponse<Data>> {
+): Promise<ResponseData<Data>> {
   const result = await response.json();
   if (!response.ok) {
     if (response.status === ENTITY_ERROR_STATUS) {

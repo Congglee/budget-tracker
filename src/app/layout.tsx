@@ -6,6 +6,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
 import { SessionProvider } from "next-auth/react";
 import { auth } from "@/auth";
+import AppProvider from "@/app/app-context";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -30,7 +31,7 @@ export default async function RootLayout({
             disableTransitionOnChange
           >
             <NextTopLoader color="#6d28d9" height={2.5} showSpinner={false} />
-            {children}
+            <AppProvider>{children}</AppProvider>
           </ThemeProvider>
           <Toaster richColors theme="system" closeButton />
         </body>

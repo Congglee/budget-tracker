@@ -3,7 +3,7 @@ interface ValidationError {
   message: string;
 }
 
-export interface CustomResponse<Data> {
+export interface ResponseData<Data> {
   message: string;
   data?: Data;
   error?: {

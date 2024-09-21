@@ -61,12 +61,12 @@ export default function UserSettingsForm({
     }
   }, [userSettings, setValue]);
 
-  const onSubmit = handleSubmit(async (data) => {
+  const onSubmit = handleSubmit(async (values) => {
     try {
       const response = await fetch("/api/users/settings", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
+        body: JSON.stringify(values),
       });
       const result = await parseApiResponse<UserSettings>(response);
       toast.success(result.message);

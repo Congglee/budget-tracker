@@ -1,8 +1,9 @@
+import { getUniqueCategory } from "@/data/category";
 import { EntityError } from "@/lib/helper";
 import prisma from "@/lib/prisma";
 import { currentUser } from "@/lib/session";
 import { formatZodErrors } from "@/lib/utils";
-import { AddUserSettingsSchema } from "@/schemas/user-settings";
+import { AddCategorySchema } from "@/schemas/category";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
@@ -15,9 +16,11 @@ export async function POST(req: Request) {
     );
   }
 
+  const userId = user.id as string;
+
   try {
     const body = await req.json();
-    const parsedData = AddUserSettingsSchema.safeParse(body);
+    const parsedData = AddCategorySchema.safeParse(body);
     if (!parsedData.success) {
       const errors = formatZodErrors(parsedData.error.errors);
       throw new EntityError({
@@ -25,16 +28,19 @@ export async function POST(req: Request) {
         payload: { message: "Validation Error", errors },
       });
     }
-    const { currency } = parsedData.data;
 
-    const userSettings = await prisma.userSettings.upsert({
-      where: { userId: user.id },
-      update: { currency },
-      create: { userId: user.id as string, currency },
+    const { name, icon, type } = parsedData.data;
+    const existingCategory = await getUniqueCategory(name, type, userId);
+    if (existingCategory) {
+      throw new Error("Category already exists!");
+    }
+
+    const category = await prisma.category.create({
+      data: { name, icon, type, userId },
     });
 
     return NextResponse.json(
-      { message: "Settings saved successfully!", data: userSettings },
+      { message: "Category created successfully!", data: category },
       { status: 200 }
     );
   } catch (error: any) {
