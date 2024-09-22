@@ -13,3 +13,9 @@ export const AddTransactionSchema = z.object({
   description: z.string().optional(),
   type: z.nativeEnum(TransactionType), // Use nativeEnum to validate enum values
 });
+
+export const DeleteTransactionsSchema = z.object({
+  list_id: z.array(z.string().uuid()).nonempty({
+    message: "list_id must be a non-empty array of transaction ids",
+  }),
+});

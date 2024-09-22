@@ -1,5 +1,6 @@
 import prisma from "@/lib/prisma";
 import { HistoryData, TimeFrame } from "@/types";
+import { Transaction } from "@prisma/client";
 import { getDaysInMonth } from "date-fns";
 
 export async function getHistoryPeriods(userId: string) {
@@ -87,4 +88,21 @@ async function getYearlyHistory(
   }
 
   return history;
+}
+
+export async function getHistoriesByTransactionsDate(
+  transactionsDate: Record<string, Transaction[]>,
+  userId: string
+) {
+  const histories = await prisma.history.findMany({
+    where: {
+      userId,
+      OR: Object.keys(transactionsDate).map((dateKey) => {
+        const [day, month, year] = dateKey.split("-").map(Number);
+        return { day, month, year };
+      }),
+    },
+  });
+
+  return histories;
 }
