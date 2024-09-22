@@ -1,6 +1,8 @@
+import BudgetCard from "@/app/(protected)/dashboard/budgets/_components/budget-card";
+import BudgetTransactionList from "@/app/(protected)/dashboard/budgets/_components/budget-transaction-list";
+import BudgetForm from "@/components/budget/budget-form";
 import ContentLayout from "@/components/dashboard-panel/content-layout";
 import DashboardHeading from "@/components/dashboard-panel/dashboard-heading";
-import AddTransactionForm from "@/components/transaction/add-transaction-form";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -8,20 +10,18 @@ import {
   BreadcrumbList,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
+import { getBudgetByIdAndUserId } from "@/data/budget";
 import { getCategoriesByUserId } from "@/data/category";
-import { getTransactionByIdAndUserId } from "@/data/transaction";
 import { getUserSettingsById } from "@/data/user-settings";
 import { currentUser } from "@/lib/session";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 
-interface TransactionEditProps {
-  params: { transactionId: string };
+interface BudgetEditProps {
+  params: { budgetId: string };
 }
 
-export default async function TransactionEdit({
-  params,
-}: TransactionEditProps) {
+export default async function BudgetEdit({ params }: BudgetEditProps) {
   const user = await currentUser();
 
   if (!user) {
@@ -30,14 +30,14 @@ export default async function TransactionEdit({
 
   const userId = user.id as string;
 
-  const [userSettings, categories, transaction] = await Promise.all([
+  const [budget, userSettings, categories] = await Promise.all([
+    getBudgetByIdAndUserId(params.budgetId, userId),
     getUserSettingsById(userId),
     getCategoriesByUserId(userId),
-    getTransactionByIdAndUserId(params.transactionId, userId),
   ]);
 
-  if (!transaction) {
-    notFound();
+  if (!budget) {
+    return notFound();
   }
 
   return (
@@ -58,32 +58,42 @@ export default async function TransactionEdit({
           <BreadcrumbSeparator />
           <BreadcrumbItem>
             <BreadcrumbLink asChild>
-              <Link href="/dashboard/transactions">Transactions</Link>
+              <Link href="/dashboard/budgets">Budgets</Link>
             </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
             <BreadcrumbLink asChild>
-              <Link
-                href={`/dashboard/transactions/${params.transactionId}/edit`}
-              >
-                Edit Transaction
+              <Link href={`/dashboard/budgets/${budget.id}/edit`}>
+                Edit Budget
               </Link>
             </BreadcrumbLink>
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
-      <DashboardHeading
-        heading="Transaction Settings 📝"
-        description="Modify transaction details."
-      />
-      <AddTransactionForm
-        categories={categories}
-        userSettings={userSettings!}
-        transaction={transaction}
-        heading="Transaction Details"
-        description="Enter the new details for the transaction."
-      />
+      <div className="space-y-8">
+        <DashboardHeading
+          heading="Budget Settings 📝"
+          description="Modify budget details."
+        />
+        <div className="grid flex-1 items-start gap-4 sm:gap-6 lg:grid-cols-2">
+          <div className="grid auto-rows-max items-start gap-4">
+            <BudgetForm
+              budget={budget}
+              userSettings={userSettings!}
+              categories={categories}
+            />
+          </div>
+          <div>
+            <BudgetCard
+              budget={budget}
+              userSettings={userSettings!}
+              isEdit={true}
+            />
+          </div>
+        </div>
+        <BudgetTransactionList budget={budget} userSettings={userSettings!} />
+      </div>
     </ContentLayout>
   );
 }

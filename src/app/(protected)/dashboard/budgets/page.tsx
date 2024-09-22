@@ -1,5 +1,7 @@
-import { currentUser } from "@/lib/session";
-import { redirect } from "next/navigation";
+import BudgetList from "@/app/(protected)/dashboard/budgets/_components/budget-list";
+import AddBudgetButton from "@/components/budget/add-budget-button";
+import ContentLayout from "@/components/dashboard-panel/content-layout";
+import DashboardHeading from "@/components/dashboard-panel/dashboard-heading";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -7,15 +9,13 @@ import {
   BreadcrumbList,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import ContentLayout from "@/components/dashboard-panel/content-layout";
-import Link from "next/link";
-import DashboardHeading from "@/components/dashboard-panel/dashboard-heading";
 import { getCategoriesByUserId } from "@/data/category";
 import { getUserSettingsById } from "@/data/user-settings";
-import AddTransactionForm from "@/components/transaction/add-transaction-form";
+import { currentUser } from "@/lib/session";
+import Link from "next/link";
+import { redirect } from "next/navigation";
 
-// Actually, the AddTransactionBtn component can be reused, but I want to experiment a little with the NextJs app route. 😙
-export default async function AddTransactionPage() {
+export default async function BudgetsPage() {
   const user = await currentUser();
 
   if (!user) {
@@ -30,7 +30,7 @@ export default async function AddTransactionPage() {
   ]);
 
   return (
-    <ContentLayout title="Transactions">
+    <ContentLayout title="Budgets">
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
@@ -47,25 +47,24 @@ export default async function AddTransactionPage() {
           <BreadcrumbSeparator />
           <BreadcrumbItem>
             <BreadcrumbLink asChild>
-              <Link href="/dashboard/transactions">Transactions</Link>
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbLink asChild>
-              <Link href="/dashboard/transactions/new">New Transaction</Link>
+              <Link href="/dashboard/budgets">Budgets</Link>
             </BreadcrumbLink>
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
-      <DashboardHeading
-        heading="New Transaction 💱"
-        description="Create a new transaction to track your expenses and income."
-      />
-      <AddTransactionForm
-        categories={categories}
-        userSettings={userSettings!}
-      />
+      <div className="space-y-6">
+        <DashboardHeading
+          heading="Budgets"
+          description="Manage your budgets."
+          wrapperClassName="sm:flex-row"
+        >
+          <AddBudgetButton
+            userSettings={userSettings!}
+            categories={categories}
+          />
+        </DashboardHeading>
+        <BudgetList userSettings={userSettings!} categories={categories} />
+      </div>
     </ContentLayout>
   );
 }

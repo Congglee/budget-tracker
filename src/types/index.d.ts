@@ -1,4 +1,4 @@
-import { Budget, Category } from "@prisma/client";
+import { Budget, Category, Transaction } from "@prisma/client";
 
 export type SiteConfig = {
   name: string;
@@ -56,3 +56,8 @@ export type HistoryData = {
 };
 
 export type ExtendedCategory = Category & { budgets: Budget[] };
+
+export type ExtendedBudget = Budget & {
+  category: Category;
+  transactions: Transaction[];
+};

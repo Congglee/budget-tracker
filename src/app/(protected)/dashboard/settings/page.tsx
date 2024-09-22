@@ -56,7 +56,7 @@ export default async function Settings() {
           description="Manage account and app settings."
         />
         <Tabs defaultValue="account">
-          <TabsList className="grid grid-cols-3 w-full">
+          <TabsList className="sm:grid sm:grid-cols-3 sm:w-full">
             <TabsTrigger value="account">Account</TabsTrigger>
             <TabsTrigger value="password" disabled={user.isOAuth}>
               Password

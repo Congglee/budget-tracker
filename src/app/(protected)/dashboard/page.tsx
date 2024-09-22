@@ -16,7 +16,7 @@ import { getDashboardOverview } from "@/data/statistical";
 import { getUserSettingsById } from "@/data/user-settings";
 import { currentUser } from "@/lib/session";
 import { parseDateRangeParams, parseTimeFrameParams } from "@/lib/utils";
-import { ExtendedCategory, SearchParams } from "@/types";
+import { SearchParams } from "@/types";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
@@ -69,7 +69,7 @@ export default async function DashboardPage({
       <DashboardHeading heading={`Welcome back, ${user.name} 👋`}>
         <DateRangePicker />
         <AddTransactionButton
-          categories={categories as ExtendedCategory[]}
+          categories={categories}
           userSettings={userSettings!}
           btnClassName="h-9"
         />

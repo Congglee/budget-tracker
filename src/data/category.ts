@@ -1,9 +1,9 @@
 import prisma from "@/lib/prisma";
-import { DateRange } from "@/types";
+import { DateRange, ExtendedCategory } from "@/types";
 import { TransactionType } from "@prisma/client";
 
 export async function getCategoriesByUserId(userId: string) {
-  const categories = await prisma.category.findMany({
+  const categories = (await prisma.category.findMany({
     where: { userId },
     orderBy: { createdAt: "desc" },
     include: {
@@ -11,7 +11,7 @@ export async function getCategoriesByUserId(userId: string) {
         select: { id: true, name: true, remaining: true, amount: true },
       },
     },
-  });
+  })) as ExtendedCategory[];
 
   return categories;
 }
