@@ -1,6 +1,6 @@
 import Logo from "@/components/logo";
 import { Separator } from "@/components/ui/separator";
-import UserSettingsForm from "@/components/user-settings/user-settings-form";
+import UserSettingsForm from "@/components/settings/user-settings-form";
 import { getUserSettingsById } from "@/data/user-settings";
 import { currentUser } from "@/lib/session";
 import { redirect } from "next/navigation";

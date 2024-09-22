@@ -26,7 +26,7 @@ export default function UserNav({ user }: UserNavProps) {
           <Avatar className="w-9 h-9">
             <AvatarImage src={user.image || ""} alt="User profile picture" />
             <AvatarFallback>
-              <CircleUserRound className="text-white" />
+              <CircleUserRound />
             </AvatarFallback>
           </Avatar>
         </Button>

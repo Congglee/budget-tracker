@@ -1,6 +1,7 @@
 import type { Config } from "tailwindcss";
 import plugin from "tailwindcss/plugin";
 import tailwindcssAnimate from "tailwindcss-animate";
+import { withUt } from "uploadthing/tw";
 
 const config = {
   darkMode: ["class"],
@@ -91,7 +92,7 @@ const config = {
   },
   plugins: [
     tailwindcssAnimate,
-    plugin(function ({ addComponents, theme }) {
+    plugin(function ({ addComponents, theme, matchUtilities }) {
       addComponents({
         ".container": {
           maxWidth: theme("columns.7xl"),
@@ -105,4 +106,4 @@ const config = {
   ],
 } satisfies Config;
 
-export default config;
+export default withUt(config);

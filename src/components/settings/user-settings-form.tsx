@@ -1,5 +1,6 @@
 "use client";
 
+import CurrencyComboBox from "@/components/settings/currency-combo-box";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -11,7 +12,6 @@ import {
 } from "@/components/ui/card";
 import { Form, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { Separator } from "@/components/ui/separator";
-import CurrencyComboBox from "@/components/user-settings/currency-combo-box";
 import { handleErrorResponse, parseApiResponse } from "@/lib/helper";
 import { cn } from "@/lib/utils";
 import { AddUserSettingsSchema } from "@/schemas/user-settings";
@@ -24,7 +24,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 
-interface ProfileFormProps {
+interface UserSettingsFormProps {
   btnClassName?: string;
   confirmButtonText?: string;
   heading?: string;
@@ -42,7 +42,7 @@ export default function UserSettingsForm({
   description,
   userSettings,
   isInWizardStep,
-}: ProfileFormProps) {
+}: UserSettingsFormProps) {
   const form = useForm<FormData>({
     resolver: zodResolver(AddUserSettingsSchema),
     defaultValues: { currency: "" },

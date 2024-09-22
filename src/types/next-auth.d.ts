@@ -10,3 +10,5 @@ declare module "next-auth" {
     user: ExtendedUser;
   }
 }
+
+declare module "@auth/core/jwt" {}

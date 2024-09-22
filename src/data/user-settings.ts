@@ -11,3 +11,13 @@ export async function getUserSettingsById(id: string) {
     return null;
   }
 }
+
+export async function getOrCreateUserSettings(id: string) {
+  const userSettings = await prisma.userSettings.upsert({
+    where: { userId: id },
+    update: {},
+    create: { userId: id, currency: "USD" },
+  });
+
+  return userSettings;
+}
