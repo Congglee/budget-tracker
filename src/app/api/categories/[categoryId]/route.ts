@@ -1,13 +1,23 @@
-import { getUniqueCategory, verifyUserCategories } from "@/data/category";
-import { getTransactionsByCategoryIds } from "@/data/transaction";
+import { getUniqueCategory, verifyUserCategory } from "@/data/category";
+import { getTransactionsByCategoryId } from "@/data/transaction";
 import { EntityError } from "@/lib/helper";
 import prisma from "@/lib/prisma";
 import { currentUser } from "@/lib/session";
 import { formatZodErrors } from "@/lib/utils";
-import { AddCategorySchema, DeleteCategoriesSchema } from "@/schemas/category";
+import { AddCategorySchema } from "@/schemas/category";
 import { NextResponse } from "next/server";
+import { z } from "zod";
 
-export async function POST(req: Request) {
+const RouteContextSchema = z.object({
+  params: z.object({
+    categoryId: z.string().uuid(),
+  }),
+});
+
+export async function PATCH(
+  req: Request,
+  context: z.infer<typeof RouteContextSchema>
+) {
   const user = await currentUser();
 
   if (!user) {
@@ -20,6 +30,12 @@ export async function POST(req: Request) {
   const userId = user.id as string;
 
   try {
+    const { params } = RouteContextSchema.parse(context);
+    const checkCategory = await verifyUserCategory(userId, params.categoryId);
+    if (!checkCategory) {
+      throw new Error("Category not found");
+    }
+
     const body = await req.json();
     const parsedData = AddCategorySchema.safeParse(body);
     if (!parsedData.success) {
@@ -31,17 +47,24 @@ export async function POST(req: Request) {
     }
 
     const { name, icon, type } = parsedData.data;
-    const existingCategory = await getUniqueCategory(name, type, userId);
+
+    const existingCategory = await getUniqueCategory(
+      name,
+      type,
+      userId,
+      params.categoryId
+    );
     if (existingCategory) {
-      throw new Error("Category already exists!");
+      throw new Error("Category already exists");
     }
 
-    const category = await prisma.category.create({
-      data: { name, icon, type, userId },
+    const category = await prisma.category.update({
+      where: { id: params.categoryId },
+      data: { name, icon, type, updatedAt: new Date() },
     });
 
     return NextResponse.json(
-      { message: "Category created successfully!", data: category },
+      { message: "Category updated successfully", data: category },
       { status: 200 }
     );
   } catch (error: any) {
@@ -63,7 +86,10 @@ export async function POST(req: Request) {
   }
 }
 
-export async function DELETE(req: Request) {
+export async function DELETE(
+  req: Request,
+  context: z.infer<typeof RouteContextSchema>
+) {
   const user = await currentUser();
 
   if (!user) {
@@ -76,25 +102,22 @@ export async function DELETE(req: Request) {
   const userId = user.id as string;
 
   try {
-    const body = await req.json();
-    const { list_id } = DeleteCategoriesSchema.parse(body);
-
-    const checkCategories = await verifyUserCategories(userId, list_id);
-    if (!checkCategories) {
-      throw new Error("Categories not found");
+    const { params } = RouteContextSchema.parse(context);
+    const checkCategory = await verifyUserCategory(userId, params.categoryId);
+    if (!checkCategory) {
+      throw new Error("Category not found");
     }
 
-    const categoriesTransactions = await getTransactionsByCategoryIds(list_id);
-    if (categoriesTransactions.length > 0) {
-      throw new Error("Categories are being used in transactions");
+    const categoryTransactions = await getTransactionsByCategoryId(
+      params.categoryId
+    );
+    if (categoryTransactions.length > 0) {
+      throw new Error("Category is in use");
     }
-
-    const deletedCategories = await prisma.category.deleteMany({
-      where: { id: { in: list_id }, userId: user.id },
-    });
+    await prisma.category.delete({ where: { id: params.categoryId } });
 
     return NextResponse.json(
-      { message: `Delete ${deletedCategories.count} categories successfully` },
+      { message: "Category deleted successfully" },
       { status: 200 }
     );
   } catch (error: any) {

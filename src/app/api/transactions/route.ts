@@ -1,6 +1,6 @@
 import { getHistoriesByTransactionsDate } from "@/data/history";
 import {
-  getTransactionsByIds,
+  getTransactionsByIdsAndUserId,
   verifyUserTransactions,
 } from "@/data/transaction";
 import { EntityError } from "@/lib/helper";
@@ -145,7 +145,7 @@ export async function DELETE(req: Request) {
       throw new Error("Transactions not found");
     }
 
-    const transactions = await getTransactionsByIds(list_id, userId);
+    const transactions = await getTransactionsByIdsAndUserId(list_id, userId);
     if (transactions.length > 0) {
       const transactionsByDate: Record<string, Transaction[]> = {};
       const transactionsByBudget: Record<string, Transaction[]> = {};

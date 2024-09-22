@@ -53,12 +53,20 @@ export async function getTransactionsByUserId(
   return transactions;
 }
 
-export async function getTransactionsByIds(
+export async function getTransactionsByIdsAndUserId(
   transactionIds: string[],
   userId: string
 ) {
   const transactions = await prisma.transaction.findMany({
     where: { id: { in: transactionIds }, userId },
+  });
+
+  return transactions;
+}
+
+export async function getTransactionsByCategoryIds(categoryIds: string[]) {
+  const transactions = await prisma.transaction.findMany({
+    where: { categoryId: { in: categoryIds } },
   });
 
   return transactions;
@@ -114,4 +122,12 @@ export async function getTransactionByIdAndUserId(id: string, userId: string) {
   } catch {
     return null;
   }
+}
+
+export async function getTransactionsByCategoryId(categoryId: string) {
+  const transactions = await prisma.transaction.findMany({
+    where: { categoryId },
+  });
+
+  return transactions;
 }

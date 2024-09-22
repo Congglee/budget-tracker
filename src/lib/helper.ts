@@ -98,5 +98,6 @@ export async function parseApiResponse<Data>(
     }
     throw new HttpError({ status: response.status, payload: result.error });
   }
+
   return result;
 }

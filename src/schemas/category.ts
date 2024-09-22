@@ -6,3 +6,9 @@ export const AddCategorySchema = z.object({
   icon: z.string(),
   type: z.enum([TransactionType.INCOME, TransactionType.EXPENSE]),
 });
+
+export const DeleteCategoriesSchema = z.object({
+  list_id: z.array(z.string().uuid()).nonempty({
+    message: "list_id must be a non-empty array of transaction ids",
+  }),
+});

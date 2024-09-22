@@ -19,11 +19,17 @@ export async function getCategoriesByUserId(userId: string) {
 export async function getUniqueCategory(
   name: string,
   type: TransactionType,
-  userId: string
+  userId: string,
+  id?: string
 ) {
   try {
     const uniqueCategory = await prisma.category.findFirst({
-      where: { name, type, userId },
+      where: {
+        name,
+        type,
+        userId,
+        ...(id && { NOT: { id } }),
+      },
     });
 
     return uniqueCategory;
@@ -62,4 +68,34 @@ export async function getCategorySummary(
   }));
 
   return categoryDetails;
+}
+
+export async function verifyUserCategory(userId: string, categoryId: string) {
+  const count = await prisma.category.count({
+    where: { id: categoryId, userId },
+  });
+
+  return count > 0;
+}
+
+export async function verifyUserCategories(
+  userId: string,
+  categoryIds: string[]
+) {
+  const count = await prisma.category.count({
+    where: { id: { in: categoryIds }, userId },
+  });
+
+  return count === categoryIds.length;
+}
+
+export async function getCategoriesByIdsAndUserId(
+  categoryIds: string[],
+  userId: string
+) {
+  const categories = await prisma.category.findMany({
+    where: { id: { in: categoryIds }, userId },
+  });
+
+  return categories;
 }
