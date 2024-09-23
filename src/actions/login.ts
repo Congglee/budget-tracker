@@ -20,7 +20,7 @@ import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 import { LoginSchema } from "@/schemas";
 import { AuthError } from "next-auth";
 import { z } from "zod";
-// import bcrypt from "bcryptjs";
+import bcrypt from "bcryptjs";
 
 export async function login(
   values: z.infer<typeof LoginSchema>,
@@ -98,18 +98,18 @@ export async function login(
         data: { userId: existingUser.id },
       });
     } else {
-      // const passwordsMatch = await bcrypt.compare(
-      //   values.password,
-      //   existingUser.password
-      // );
-      // if (!passwordsMatch) {
-      //   return {
-      //     error: {
-      //       status: 400,
-      //       payload: { message: "Invalid email or password!" },
-      //     },
-      //   };
-      // }
+      const passwordsMatch = await bcrypt.compare(
+        values.password,
+        existingUser.password
+      );
+      if (!passwordsMatch) {
+        return {
+          error: {
+            status: 400,
+            payload: { message: "Invalid email or password!" },
+          },
+        };
+      }
 
       const twoFactorToken = await generateTwoFactorToken(existingUser.email);
       await sendTwoFactorTokenEmail(twoFactorToken.email, twoFactorToken.token);

@@ -33,7 +33,7 @@ export async function POST(req: Request) {
     const { name, icon, type } = parsedData.data;
     const existingCategory = await getUniqueCategory(name, type, userId);
     if (existingCategory) {
-      throw new Error("Category already exists!");
+      throw new Error("Category already exists");
     }
 
     const category = await prisma.category.create({
@@ -41,7 +41,7 @@ export async function POST(req: Request) {
     });
 
     return NextResponse.json(
-      { message: "Category created successfully!", data: category },
+      { message: "Category created successfully", data: category },
       { status: 200 }
     );
   } catch (error: any) {

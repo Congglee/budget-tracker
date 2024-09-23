@@ -34,7 +34,7 @@ export async function POST(req: Request) {
     });
 
     return NextResponse.json(
-      { message: "Settings saved successfully!", data: userSettings },
+      { message: "Settings saved successfully", data: userSettings },
       { status: 200 }
     );
   } catch (error: any) {

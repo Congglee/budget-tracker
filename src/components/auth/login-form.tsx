@@ -67,6 +67,8 @@ export default function LoginForm() {
         } else {
           if (data?.data?.twoFactor) {
             setShowTwoFactor(true);
+          }
+          if (data?.message) {
             toast.success(data.message, { position: "top-right" });
           }
         }
