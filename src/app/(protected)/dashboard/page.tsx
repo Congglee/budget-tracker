@@ -17,8 +17,14 @@ import { getUserSettingsById } from "@/data/user-settings";
 import { currentUser } from "@/lib/session";
 import { parseDateRangeParams, parseTimeFrameParams } from "@/lib/utils";
 import { SearchParams } from "@/types";
+import { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+
+export const metadata: Metadata = {
+  title: "Dashboard",
+  description: "Monitor your financial activities.",
+};
 
 interface DashboardPageProps {
   searchParams: SearchParams;

@@ -11,8 +11,14 @@ import {
 } from "@/components/ui/breadcrumb";
 import { getCategoriesByUserId } from "@/data/category";
 import { currentUser } from "@/lib/session";
+import { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+
+export const metadata: Metadata = {
+  title: "Categories",
+  description: "Manage your categories.",
+};
 
 export default async function Categories() {
   const user = await currentUser();

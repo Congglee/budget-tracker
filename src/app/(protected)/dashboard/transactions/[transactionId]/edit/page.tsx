@@ -12,11 +12,34 @@ import { getCategoriesByUserId } from "@/data/category";
 import { getTransactionByIdAndUserId } from "@/data/transaction";
 import { getUserSettingsById } from "@/data/user-settings";
 import { currentUser } from "@/lib/session";
+import { Metadata } from "next";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 
 interface TransactionEditProps {
   params: { transactionId: string };
+}
+
+export async function generateMetadata({
+  params,
+}: TransactionEditProps): Promise<Metadata> {
+  const user = await currentUser();
+
+  if (!user) {
+    redirect("/auth/login");
+  }
+
+  const userId = user.id as string;
+
+  const transaction = await getTransactionByIdAndUserId(
+    params.transactionId,
+    userId
+  );
+
+  return {
+    title: transaction?.name ? `${transaction.name} Settings` : "Not Found",
+    description: "Modify transaction details.",
+  };
 }
 
 export default async function TransactionEdit({

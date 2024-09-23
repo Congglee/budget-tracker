@@ -19,6 +19,12 @@ import { getTransactionsByUserId } from "@/data/transaction";
 import { getUserSettingsById } from "@/data/user-settings";
 import { getCategoriesByUserId } from "@/data/category";
 import TransactionList from "@/app/(protected)/dashboard/transactions/_components/transaction-list";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Transactions",
+  description: "Manage your transactions.",
+};
 
 interface TransactionsProps {
   searchParams: SearchParams;

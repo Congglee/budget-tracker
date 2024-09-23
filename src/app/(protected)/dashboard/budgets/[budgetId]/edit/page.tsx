@@ -14,11 +14,31 @@ import { getBudgetByIdAndUserId } from "@/data/budget";
 import { getCategoriesByUserId } from "@/data/category";
 import { getUserSettingsById } from "@/data/user-settings";
 import { currentUser } from "@/lib/session";
+import { Metadata } from "next";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 
 interface BudgetEditProps {
   params: { budgetId: string };
+}
+
+export async function generateMetadata({
+  params,
+}: BudgetEditProps): Promise<Metadata> {
+  const user = await currentUser();
+
+  if (!user) {
+    redirect("/auth/login");
+  }
+
+  const userId = user.id as string;
+
+  const budget = await getBudgetByIdAndUserId(params.budgetId, userId);
+
+  return {
+    title: budget?.name ? `${budget.name} Settings` : "Not Found",
+    description: "Modify budget details.",
+  };
 }
 
 export default async function BudgetEdit({ params }: BudgetEditProps) {

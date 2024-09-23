@@ -13,6 +13,12 @@ import DashboardHeading from "@/components/dashboard-panel/dashboard-heading";
 import { getCategoriesByUserId } from "@/data/category";
 import { getUserSettingsById } from "@/data/user-settings";
 import AddTransactionForm from "@/components/transaction/add-transaction-form";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "New Transaction",
+  description: "Create a new transaction to track your expenses and income.",
+};
 
 // Actually, the AddTransactionBtn component can be reused, but I want to experiment a little with the NextJs app route. 😙
 export default async function AddTransactionPage() {

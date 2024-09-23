@@ -12,8 +12,14 @@ import {
 import { getCategoriesByUserId } from "@/data/category";
 import { getUserSettingsById } from "@/data/user-settings";
 import { currentUser } from "@/lib/session";
+import { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+
+export const metadata: Metadata = {
+  title: "Budgets",
+  description: "Manage your budgets.",
+};
 
 export default async function BudgetsPage() {
   const user = await currentUser();

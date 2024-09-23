@@ -15,6 +15,12 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import ProfileForm from "@/components/settings/profile-form";
 import ChangePasswordForm from "@/components/settings/change-password-form";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Settings",
+  description: "Manage your account and app settings.",
+};
 
 export default async function Settings() {
   const user = await currentUser();
