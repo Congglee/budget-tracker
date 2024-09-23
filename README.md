@@ -17,7 +17,7 @@ Budget Tracker is an open-source web application designed to help users effectiv
 
 ## Features to be implemented
 
-- [x] Authentication with Auth.js
+- [x] Authentication with **Auth.js**
 - [x] File uploads with **uploadthing**
 - [x] Email verification with **Resend**
 - [x] ORM using **Prisma ORM**
