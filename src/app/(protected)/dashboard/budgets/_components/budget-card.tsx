@@ -156,20 +156,22 @@ export default function BudgetCard({
             </div>
           </div>
         </CardContent>
-        <CardFooter className="flex flex-col gap-y-4 gap-x-6 xs:flex-row xs:justify-between border-t bg-muted/50 px-5 py-3 text-muted-foreground items-start text-xs">
-          <div className="flex flex-col gap-1 font-semibold basis-1/2">
-            <span>Spent: {formatUserCurrency.format(budget.totalSpent)}</span>
-            <span>
-              Remaining: {formatUserCurrency.format(budget.remaining)}
-            </span>
-          </div>
-          <div
-            className={cn(
-              "xs:text-right basis-1/2 line-clamp-3",
-              isEdit && "line-clamp-none"
-            )}
-          >
-            Category: {budget.category.name}
+        <CardFooter className="border-t bg-muted/50 px-5 py-3 text-muted-foreground text-xs">
+          <div className="flex flex-col xs:flex-row gap-y-4 gap-x-6 items-start xs:justify-between w-full">
+            <div className="flex flex-col gap-1 font-semibold basis-1/2">
+              <span>Spent: {formatUserCurrency.format(budget.totalSpent)}</span>
+              <span>
+                Remaining: {formatUserCurrency.format(budget.remaining)}
+              </span>
+            </div>
+            <div
+              className={cn(
+                "xs:text-right basis-1/2 line-clamp-3",
+                isEdit && "line-clamp-none"
+              )}
+            >
+              Category: {budget.category.name}
+            </div>
           </div>
         </CardFooter>
       </Card>

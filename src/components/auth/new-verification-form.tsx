@@ -47,7 +47,9 @@ export default function NewVerificationForm() {
       wrapperClassName="text-center"
     >
       <div className="flex items-center w-full justify-center">
-        {!success && !error && <BeatLoader />}
+        {!success && !error && (
+          <BeatLoader color="#9b59b6" size={18} margin={5} />
+        )}
         <FormSuccess message={success} />
         {!success && <FormError message={error} />}
       </div>

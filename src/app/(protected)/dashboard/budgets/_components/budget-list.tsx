@@ -202,6 +202,7 @@ export default function BudgetList({
                       duration: 0.5,
                     }}
                     viewport={{ amount: 0 }}
+                    className="grid overflow-hidden"
                   >
                     <BudgetCard
                       key={budget.id}

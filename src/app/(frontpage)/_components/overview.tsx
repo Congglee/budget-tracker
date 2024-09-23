@@ -13,7 +13,7 @@ export default function Overview() {
           <ImageFrame>
             <Image
               className="rounded-lg"
-              src="https://utfs.io/f/rXMtqs6lu3kdTB8j8dSzeOpHvBJyc2mFwSbQY17LoC0IdVDK"
+              src="https://utfs.io/f/rXMtqs6lu3kdsLjSw5ffq8HXyjB023aVC1KuGYp6ewzMhDRZ"
               width="1280"
               height="720"
               alt="Showcase image"
