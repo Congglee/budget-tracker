@@ -74,7 +74,7 @@ export default function ChangePasswordForm() {
             <CardTitle>Change Your Password</CardTitle>
             <CardDescription>
               Enter your current password and a new password to change your
-              account password
+              account password.
             </CardDescription>
           </CardHeader>
           <CardContent>

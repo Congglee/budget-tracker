@@ -9,6 +9,8 @@ import { UpdateProfileSchema } from "@/schemas";
 import bcrypt from "bcryptjs";
 import { z } from "zod";
 
+const DEFAULT_TEST_USER_EMAIL = "johndoe@imail.edu.vn";
+
 export async function updateProfile(
   values: z.infer<typeof UpdateProfileSchema>
 ) {
@@ -29,6 +31,19 @@ export async function updateProfile(
     values.password = undefined;
     values.newPassword = undefined;
     values.isTwoFactorEnabled = undefined;
+  }
+
+  if (
+    userDB.email === DEFAULT_TEST_USER_EMAIL &&
+    values.password &&
+    values.newPassword
+  ) {
+    return {
+      error: {
+        status: 400,
+        payload: { message: "Cannot change password for test user!" },
+      },
+    };
   }
 
   if (values.email && values.email !== user.email) {
