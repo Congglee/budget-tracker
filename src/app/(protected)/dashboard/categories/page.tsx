@@ -1,5 +1,5 @@
 import CategoryList from "@/app/(protected)/dashboard/categories/_components/category-list";
-import AddCategoryBtn from "@/components/category/add-category-btn";
+import AddCategoryButton from "@/components/category/add-category-button";
 import ContentLayout from "@/components/dashboard-panel/content-layout";
 import DashboardHeading from "@/components/dashboard-panel/dashboard-heading";
 import {
@@ -60,7 +60,7 @@ export default async function Categories() {
           description="Manage your categories."
           wrapperClassName="sm:flex-row"
         >
-          <AddCategoryBtn />
+          <AddCategoryButton />
         </DashboardHeading>
         <CategoryList categories={categories} />
       </div>

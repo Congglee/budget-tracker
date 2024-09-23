@@ -6,11 +6,13 @@ import { cn } from "@/lib/utils";
 import { PlusCircle } from "lucide-react";
 import { useState } from "react";
 
-interface AddCategoryBtnProps {
+interface AddCategoryButtonProps {
   btnClassName?: string;
 }
 
-export default function AddCategoryBtn({ btnClassName }: AddCategoryBtnProps) {
+export default function AddCategoryButton({
+  btnClassName,
+}: AddCategoryButtonProps) {
   const [addCategoryDrawerOpen, setAddCategoryDrawerOpen] =
     useState<boolean>(false);
 

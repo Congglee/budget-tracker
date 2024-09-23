@@ -34,29 +34,31 @@ export default function ConfirmDialog({
   return (
     <Credenza open={open} onOpenChange={onOpenStateChange}>
       <CredenzaContent>
-        <CredenzaHeader>
-          <CredenzaTitle>{title}</CredenzaTitle>
-          <CredenzaDescription>{description}</CredenzaDescription>
-        </CredenzaHeader>
-        <CredenzaFooter className="flex flex-col-reverse">
-          <CredenzaClose asChild>
-            <Button variant="outline" disabled={isSubmitLoading}>
-              {cancelText || "Cancel"}
+        <div className="space-y-4">
+          <CredenzaHeader className="mr-12">
+            <CredenzaTitle>{title}</CredenzaTitle>
+            <CredenzaDescription>{description}</CredenzaDescription>
+          </CredenzaHeader>
+          <CredenzaFooter className="flex flex-col-reverse">
+            <CredenzaClose asChild>
+              <Button variant="outline" disabled={isSubmitLoading}>
+                {cancelText || "Cancel"}
+              </Button>
+            </CredenzaClose>
+            <Button
+              onClick={() => {
+                onConfirm && onConfirm();
+              }}
+              disabled={isSubmitLoading}
+              className="bg-red-600 focus:ring-red-600"
+            >
+              {isSubmitLoading && (
+                <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />
+              )}
+              <span>{confirmText || "Delete"}</span>
             </Button>
-          </CredenzaClose>
-          <Button
-            onClick={() => {
-              onConfirm && onConfirm();
-            }}
-            disabled={isSubmitLoading}
-            className="bg-red-600 focus:ring-red-600"
-          >
-            {isSubmitLoading && (
-              <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />
-            )}
-            <span>{confirmText || "Delete"}</span>
-          </Button>
-        </CredenzaFooter>
+          </CredenzaFooter>
+        </div>
       </CredenzaContent>
     </Credenza>
   );

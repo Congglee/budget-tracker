@@ -149,7 +149,7 @@ export default function AddBudgetButton({
         onOpenChange={setAddBudgetDialogOpen}
       >
         <CredenzaContent className="p-0">
-          <div className="overflow-y-auto scroll max-h-[650px] text-foreground p-6 space-y-4">
+          <div className="overflow-y-auto md:w-[520px] w-full text-foreground p-6 space-y-4">
             <CredenzaHeader>
               <CredenzaTitle>
                 Create a new <span className="text-primary">budget</span>
